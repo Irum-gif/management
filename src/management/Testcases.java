@@ -1,0 +1,122 @@
+package management;
+
+import management.table.Item;
+import management.table.Product;
+import management.table.Orders;
+import management.tool.Legimitate;
+import management.tool.Producttest;
+import management.tool.Orderstest;
+
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Testcases {
+    Producttest tool1 = new Producttest();
+    Orderstest tool2= new Orderstest();
+    Legimitate tool3 = new Legimitate();
+    @Test
+    //添加商品
+    public void method1() throws Exception {
+        List<Product> products = new ArrayList<>();
+        Collections.addAll(products,
+                new Product("苹果", 2.0, 5),
+                new Product("香蕉", 3.0, 10),
+                new Product("橙子", 4.0, 15),
+                new Product("西瓜", 5.0, 20),
+                new Product("葡萄", 6.0, 25),
+                new Product("草莓", 7.0, 30),
+                new Product("樱桃", 8.0, 35),
+                new Product("芒果", 9.0, 40),
+                new Product("菠萝", 10.0, 45),
+                new Product("梨", 11.0, 50),
+                new Product("柚子", 12.0, 55),
+                new Product("荔枝", 13.0, 60)
+        );
+        for (Product product : products) {
+            tool1.addProduct(product);
+        }
+    }
+    @Test
+    //删除商品
+    public void method2() throws Exception {
+        tool1.deleteProductById(3);
+    }
+    @Test
+    //修改商品
+    public void method3() throws Exception {
+        String name = "香蕉";
+        double price = 2;
+        int stock = 50;
+        tool1.updateProduct(name, price, stock,2);
+    }
+    @Test
+    //查询商品
+    public void method4() throws Exception {
+        int id=17;
+        System.out.println(tool1.getProductById(id));
+    }
+    @Test
+    //商品排序
+    public void method5() throws Exception {
+        List<Product> products = tool1.productSort();
+        for (Product product : products) {
+            System.out.println(product);
+        }
+    }
+    @Test
+    //添加订单
+    public void method6() throws Exception {
+        List<Orders> orders= new ArrayList<>();
+        List<Item> items1=new ArrayList<>();
+        List<Item> items2=new ArrayList<>();
+        Collections.addAll(items1,
+                new Item(1,0),
+                new Item(2,1),
+                new Item(3,3)
+        );
+        Collections.addAll(items2,
+                new Item(2,2),
+                new Item(3,1),
+                new Item(4,2)
+        );
+        Collections.addAll(orders,
+                new Orders(tool2.calculateTotalPrice(items1), items1),
+                new Orders(tool2.calculateTotalPrice(items2), items2)
+        );
+        for (Orders order : orders) {
+            tool2.addOrders(order);
+        }
+    }
+    @Test
+    //删除订单
+    public void method7() throws Exception {
+        tool2.deleteOrdersById(26);
+    }
+    @Test
+    //修改订单
+    public void method8() throws Exception {
+        tool2.updateOrderItem(4,3,0);
+    }
+    @Test
+    //查询订单
+    public void method9() throws Exception {
+        Orders order=tool2.getOrderById(1);
+        System.out.println(order);
+    }
+    @Test
+    //排序所有订单
+    public void method10() throws Exception {
+        List<Orders> orders=tool2.getAllOrders("total_price");
+        for (Orders order : orders) {
+            System.out.println(order);
+        }
+    }
+    @Test
+    //小测试
+    public void method11() throws Exception {
+
+    }
+}
