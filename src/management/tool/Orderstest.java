@@ -2,7 +2,6 @@ package management.tool;
 
 import management.table.Item;
 import management.table.Orders;
-import management.table.Product;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,7 +60,7 @@ public class Orderstest {
                 orders.add(box);
             }
         }catch (Exception e){
-            e.printStackTrace();
+            throw e;
         }finally {
             conn.close();
         }
@@ -82,10 +81,11 @@ public class Orderstest {
             rs.next();
             anInt = rs.getInt(1);
             addOrdersProduct(anInt,orders,conn);
+            System.out.println("订单"+anInt+"添加成功");
             conn.commit();
         } catch (Exception e) {
-            e.printStackTrace();
             conn.rollback();
+            throw e;
         } finally {
             conn.close();
         }
@@ -112,10 +112,9 @@ public class Orderstest {
                     pstmt.addBatch();// 添加批处理
                 }
             pstmt.executeBatch(); // 统一执行
-            System.out.println("订单"+id+"添加成功");
             } catch (Exception e) {
-                e.printStackTrace();
                 conn.rollback();
+                throw e;
             }
     }
     //删除订单
@@ -129,17 +128,15 @@ public class Orderstest {
         try {
             conn.setAutoCommit(false);
             if(checkOrderById(id)){
-                throw new InvalidDataException("该订单不存在");
-            }
-            else {
-                System.out.println("订单"+id+"删除成功");
+                throw new InvalidDataException("订单"+id+"不存在");
             }
             pstmt.setInt(1,id);
             pstmt.executeUpdate();
+            System.out.println("订单"+id+"删除成功");
             conn.commit();
         }catch (SQLException e){
             conn.rollback();
-            throw  new  RuntimeException(e);
+            throw e;
         }finally {
             pstmt.close();
             conn.close();
@@ -160,7 +157,7 @@ public class Orderstest {
             conn.commit();
         }catch (SQLException e){
             conn.rollback();
-            throw  new  RuntimeException(e);
+            throw e;
         }finally {
             pstmt.close();
             conn.close();
@@ -205,7 +202,7 @@ public class Orderstest {
             }
         } catch (Exception e) {
             conn.rollback();
-            throw new RuntimeException(e);
+            throw e;
         } finally {
             conn.close();
         }
@@ -230,7 +227,7 @@ public class Orderstest {
             conn.commit();
         }catch (SQLException e){
             conn.rollback();
-            throw  new  RuntimeException(e);
+            throw e;
         }finally {
             conn.close();
         }
@@ -259,7 +256,7 @@ public class Orderstest {
             conn.commit();
         }catch (SQLException e){
             conn.rollback();
-            throw  new  RuntimeException(e);
+            throw e;
         }finally {
             conn.close();
         }
@@ -276,14 +273,14 @@ public class Orderstest {
         try{
             conn.setAutoCommit(false);
             if(checkOrderById(id)){
-                throw new InvalidDataException("该订单不存在");
+                throw new InvalidDataException("订单"+id+"不存在");
             } else if (checkOrderProductById(id,productId)){
-                throw new InvalidDataException("该订单中不存在该商品");
+                throw new InvalidDataException("订单"+id+"中不存在该商品");
             } else if (quantity==0) {
                  deleteOrdersProductById(productId);
                  return;
             } else if (!legimitate.checkInt(quantity)){
-                throw new InvalidDataException("订单商品数量不能小于0");
+                throw new InvalidDataException("订单"+id+"中修改商品数量不能小于0");
             }else if(checkStockHave(productId,quantity)==-1){//库存不足
                 throw new InvalidDataException("商品"+productId+"库存不足,订单"+id+"修改失败");
             }
@@ -292,11 +289,12 @@ public class Orderstest {
             pstmt.setInt(2,id);
             pstmt.setInt(3,productId);
             pstmt.executeUpdate();
+            System.out.println("订单"+id+"商品"+productId+"数量修改成功");
             conn.commit();
             updateOrders(id,calculateTotalPrice(getItemsById(id)));
         }catch (Exception e){
-            e.printStackTrace();
             conn.rollback();
+            throw e;
         }finally {
             pstmt.close();
             conn.close();
@@ -314,8 +312,8 @@ public class Orderstest {
             pstmt.executeUpdate();
             conn.commit();
         }catch (Exception e){
-            e.printStackTrace();
             conn.rollback();
+            throw e;
         }finally {
             pstmt.close();
             conn.close();
@@ -324,22 +322,21 @@ public class Orderstest {
     //订单排序（下单时间）
     public List<Orders> getAllOrders(String string) throws Exception {
         List<Orders> orders=new ArrayList<>();
-        Orders order=new Orders();
         String sql = String.format("SELECT order_id FROM orders ORDER BY %s ASC",string);
-        Connection conn1 = getConnection();
-        Statement stmt1 = conn1.createStatement();
-        try(ResultSet rs = stmt1.executeQuery(sql)){
-            conn1.setAutoCommit(false);
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        try(ResultSet rs = stmt.executeQuery(sql)){
+            conn.setAutoCommit(false);
             while (rs.next()){
                 orders.add(getOrderById(rs.getInt("order_id")));
             }
-            conn1.commit();
+            conn.commit();
         }catch (SQLException e){
-            conn1.rollback();
-            throw new RuntimeException(e);
+            conn.rollback();
+            throw e;
         }finally {
-            stmt1.close();
-            conn1.close();
+            stmt.close();
+            conn.close();
         }
 
         return orders;
@@ -362,8 +359,8 @@ public class Orderstest {
             pstmt.executeUpdate();
             conn.commit();
         } catch (Exception e) {
-            e.printStackTrace();
             conn.rollback();
+            throw e;
         } finally {
             pstmt.close();
             conn.close();

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -58,7 +57,7 @@ public class Producttest {
                 products.add(str);
             }
         }catch (Exception e){
-            e.printStackTrace();
+            throw e;
         }finally {
             conn.close();
         }
@@ -78,7 +77,7 @@ public class Producttest {
                 products.add(box);
             }
         }catch (Exception e){
-            e.printStackTrace();
+            throw e;
         }finally {
             conn.close();
         }
@@ -100,6 +99,7 @@ public class Producttest {
             conn.commit();
         } catch (Exception e) {
             conn.rollback();
+            throw e;
         } finally {
             conn.close();
         }
@@ -116,20 +116,21 @@ public class Producttest {
         try{
             conn.setAutoCommit(false);
             if(!legimitate.checkDouble(product.getProductPrice())){
-                throw new InvalidDataException("商品价格不能低于0");
+                throw new InvalidDataException("商品"+product.getProductName()+"价格不能低于0");
             } else if (!legimitate.checkInt(product.getStock())){
-                throw new InvalidDataException("商品库存不能低于0");
+                throw new InvalidDataException("商品"+product.getProductName()+"库存数量不能低于0");
             } else if (!checkProductByName(product.getProductName())) {
-                throw new InvalidDataException("该商品已存在");
+                throw new InvalidDataException("商品"+product.getProductName()+"已存在");
             }
             pstmt.setString(1, product.getProductName());
             pstmt.setDouble(2, product.getProductPrice());
             pstmt.setInt(3,product.getStock());
             pstmt.executeUpdate();
+            System.out.println("商品"+product.getProductName()+"添加成功");
             conn.commit();
         } catch (Exception e) {
-            e.printStackTrace();
             conn.rollback();
+            throw e;
         }finally {
             pstmt.close();
             conn.close();
@@ -157,10 +158,11 @@ public class Producttest {
             pstmt.setInt(3,stock);
             pstmt.setInt(4,id);
             pstmt.executeUpdate();
+            System.out.println("商品"+id+"号修改成功");
             conn.commit();
         }catch (Exception e){
-            e.printStackTrace();
             conn.rollback();
+            throw e;
         }finally {
             pstmt.close();
             conn.close();
@@ -175,16 +177,17 @@ public class Producttest {
         try(PreparedStatement pstmt = conn.prepareStatement(sql)){
             conn.setAutoCommit(false);
             if(checkProductById(id)){
-                throw new InvalidDataException("该商品不存在");
+                throw new InvalidDataException("商品"+id+"号不存在");
             }else if(!checkOrder(id)){
-                throw new InvalidDataException("该商品存在订单，无法删除");
+                throw new InvalidDataException("商品"+id+"号存在订单，无法删除");
             }
             pstmt.setInt(1,id);
             pstmt.executeUpdate();
+            System.out.println("商品"+id+"号删除成功");
             conn.commit();
         }catch (Exception e){
-            e.printStackTrace();
             conn.rollback();
+            throw e;
         }finally {
             conn.close();
         }
@@ -236,6 +239,7 @@ public class Producttest {
             }
         }catch (Exception e){
             conn.rollback();
+            throw e;
         }finally {
             stmt.close();
             conn.close();
@@ -264,8 +268,8 @@ public class Producttest {
             }
             conn.commit();
         }catch (Exception e){
-            e.printStackTrace();
             conn.rollback();
+            throw e;
         }finally {
             conn.close();
         }
@@ -290,7 +294,7 @@ public class Producttest {
             conn.commit();
         }catch (SQLException e){
             conn.rollback();
-            throw  new  RuntimeException(e);
+            throw e;
         }finally {
             conn.close();
         }
