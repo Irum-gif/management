@@ -67,13 +67,13 @@ public class Orderstest {
         return orders;
     }
     //添加订单(总价)返回所添加总价的主键
-    public int addOrders(Orders orders) throws Exception {
+    public void addOrders(Orders orders) throws Exception {
         //定义sql语句
         String sql = "INSERT INTO orders(total_price) VALUES(?);";
         //获取链接
         Connection conn = getConnection();
-        int anInt = 0;
-        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
+        int anInt;
+        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             conn.setAutoCommit(false);
             pstmt.setDouble(1, orders.getTotalPrice());
             pstmt.executeUpdate();
@@ -89,7 +89,6 @@ public class Orderstest {
         } finally {
             conn.close();
         }
-        return anInt;
     }
     //添加每一行订单
     public void addOrdersProduct(int id,Orders orders,Connection conn) throws Exception{
@@ -166,7 +165,7 @@ public class Orderstest {
     //检查订单是否存在(订单id)
     public Boolean checkOrderById(int id) throws Exception {
         ArrayList<Integer> product = selectAllOrdersId();
-        Boolean status = true;
+        boolean status = true;
         for (Integer integer : product) {
             if (integer == id) {
                 status = false;
@@ -178,7 +177,7 @@ public class Orderstest {
     //检查订单商品是否存在
     public Boolean checkOrderProductById(int id,int productId) throws Exception {
         ArrayList<Integer> product = selectAllOrdersProductId(id);
-        Boolean status = true;
+        boolean status = true;
         for (Integer integer : product) {
             if (integer == productId) {
                 status = false;

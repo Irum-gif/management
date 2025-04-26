@@ -196,9 +196,9 @@ public class Producttest {
     public Boolean checkProductByName(String name) throws Exception {
         Producttest test = new Producttest();
         ArrayList<String> product = test.selectAllProductName();
-        Boolean status = true;
-        for (int i = 0; i < product.size(); i++) {
-            if(product.get(i).equals(name)){
+        boolean status = true;
+        for (String string : product) {
+            if (string.equals(name)) {
                 status = false;
                 break;
             }
@@ -208,7 +208,7 @@ public class Producttest {
     //检查商品是否存在(商品id)
     public Boolean checkProductById(int id) throws Exception {
         ArrayList<Integer> product = selectAllProductId();
-        Boolean status = true;
+        boolean status = true;
         for (Integer integer : product) {
             if (integer == id) {
                 status = false;
@@ -281,7 +281,7 @@ public class Producttest {
         String sql="select stock from product where product_id=?;";
         //获取链接
         Connection conn=getConnection();
-        int stock=0;
+        int stock;
         try(PreparedStatement pstmt = conn.prepareStatement(sql)){
             conn.setAutoCommit(false);
             if(checkProductById(id)){
@@ -303,9 +303,9 @@ public class Producttest {
     //检查订单中是否含有该商品
     public Boolean checkOrder(int id) throws Exception {
         ArrayList<Integer> product = selectAllOrderId();
-        Boolean status = true;
-        for (int i = 0; i < product.size(); i++) {
-            if(product.get(i)==id){
+        boolean status = true;
+        for (Integer integer : product) {
+            if (integer == id) {
                 status = false;
                 break;
             }

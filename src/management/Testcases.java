@@ -3,7 +3,6 @@ package management;
 import management.table.Item;
 import management.table.Product;
 import management.table.Orders;
-import management.tool.Legimitate;
 import management.tool.Producttest;
 import management.tool.Orderstest;
 
@@ -16,10 +15,9 @@ import java.util.List;
 public class Testcases {
     Producttest tool1 = new Producttest();
     Orderstest tool2= new Orderstest();
-    Legimitate tool3 = new Legimitate();
     @Test
     //添加商品
-    public void method1() throws Exception {
+    public void method1() {
         try {
             List<Product> products = new ArrayList<>();
             Collections.addAll(products,
@@ -45,7 +43,7 @@ public class Testcases {
     }
     @Test
     //删除商品
-    public void method2() throws Exception {
+    public void method2() {
         try {
             tool1.deleteProductById(12);
         } catch (Exception e) {
@@ -54,7 +52,7 @@ public class Testcases {
     }
     @Test
     //修改商品
-    public void method3() throws Exception {
+    public void method3() {
         try {
             tool1.updateProduct("草莓", 2, 50,3);
         } catch (Exception e) {
@@ -63,7 +61,7 @@ public class Testcases {
     }
     @Test
     //查询商品
-    public void method4() throws Exception {
+    public void method4() {
         try {
             System.out.println(tool1.getProductById(3));
         } catch (Exception e) {
@@ -80,7 +78,7 @@ public class Testcases {
     }
     @Test
     //添加订单
-    public void method6() throws Exception {
+    public void method6() {
         try {
             List<Orders> orders= new ArrayList<>();
             List<Item> items1=new ArrayList<>();
@@ -108,7 +106,7 @@ public class Testcases {
     }
     @Test
     //删除订单
-    public void method7() throws Exception {
+    public void method7() {
         try {
             tool2.deleteOrdersById(6);
         } catch (Exception e) {
@@ -117,7 +115,7 @@ public class Testcases {
     }
     @Test
     //修改订单
-    public void method8() throws Exception {
+    public void method8() {
         try {
             tool2.updateOrderItem(2,6,10);
         } catch (Exception e) {
@@ -126,7 +124,7 @@ public class Testcases {
     }
     @Test
     //查询订单
-    public void method9() throws Exception {
+    public void method9() {
         try {
             System.out.println(tool2.getOrderById(2));
         } catch (Exception e) {
@@ -135,7 +133,7 @@ public class Testcases {
     }
     @Test
     //排序所有订单
-    public void method10() throws Exception {
+    public void method10() {
         try {
             List<Orders> orders=tool2.getAllOrders("total_price");
             for (Orders order : orders) {
