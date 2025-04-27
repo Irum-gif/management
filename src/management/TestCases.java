@@ -3,8 +3,8 @@ package management;
 import management.table.Item;
 import management.table.Product;
 import management.table.Orders;
-import management.tool.Producttest;
-import management.tool.Orderstest;
+import management.tool.ProductTest;
+import management.tool.OrdersTest;
 
 import org.junit.Test;
 
@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Testcases {
-    Producttest tool1 = new Producttest();
-    Orderstest tool2= new Orderstest();
+public class TestCases {
+    ProductTest tool1 = new ProductTest();
+    OrdersTest tool2= new OrdersTest();
     @Test
     //添加商品
     public void method1() {
@@ -108,7 +108,7 @@ public class Testcases {
     //删除订单
     public void method7() {
         try {
-            tool2.deleteOrdersById(6);
+            tool2.deleteOrdersById(4);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -117,7 +117,7 @@ public class Testcases {
     //修改订单
     public void method8() {
         try {
-            tool2.updateOrderItem(2,6,10);
+            tool2.updateOrderItem(3,3,10);
         } catch (Exception e) {
             e.printStackTrace();
         }
