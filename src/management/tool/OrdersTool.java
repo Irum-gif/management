@@ -312,6 +312,7 @@ public class OrdersTool {
             }
             conn.commit();
         }catch (SQLException e){
+            System.out.println("输入字符串无匹配项");
             conn.rollback();
             throw e;
         }finally {

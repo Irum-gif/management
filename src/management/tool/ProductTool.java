@@ -141,7 +141,7 @@ public class ProductTool {
         try(PreparedStatement pstmt = conn.prepareStatement(sql)){
             conn.setAutoCommit(false);
             if(checkProductById(id)){
-                throw new InvalidDataException("该商品不存在");
+                throw new InvalidDataException("商品"+id+"号不存在");
             } else if(!legitimate.checkDouble(price)){
                 throw new InvalidDataException("商品价格不能低于0");
             } else if (!legitimate.checkInt(stock)){
@@ -241,7 +241,7 @@ public class ProductTool {
         try(PreparedStatement pstmt = conn.prepareStatement(sql)){
             conn.setAutoCommit(false);
             if(checkProductById(id)){
-                throw new InvalidDataException("该商品不存在");
+                throw new InvalidDataException("商品"+id+"号不存在");
             }
             pstmt.setInt(1,id);
             ResultSet rs =pstmt.executeQuery();

@@ -56,7 +56,7 @@ public class TestCases {
     //修改商品
     public void method3() {
         try {
-            tool1.updateProduct("草莓", 2, 50,3);
+            tool1.updateProduct("草莓", 2, 50,12);
         } catch (Exception e) {
             e.printStackTrace(err);
         }
@@ -65,7 +65,7 @@ public class TestCases {
     //查询商品
     public void method4() {
         try {
-            System.out.println(tool1.getProductById(3));
+            System.out.println(tool1.getProductById(12));
         } catch (Exception e) {
             e.printStackTrace(err);
         }
@@ -86,7 +86,7 @@ public class TestCases {
             List<Item> items1=new ArrayList<>();
             List<Item> items2=new ArrayList<>();
             Collections.addAll(items1,
-                    new Item(1,1),
+                    new Item(1,-1),
                     new Item(2,1),
                     new Item(3,3)
             );
@@ -110,7 +110,7 @@ public class TestCases {
     //删除订单
     public void method7() {
         try {
-            tool2.deleteOrdersById(4);
+            tool2.deleteOrdersById(5);
         } catch (Exception e) {
             e.printStackTrace(err);
         }
@@ -119,7 +119,7 @@ public class TestCases {
     //修改订单
     public void method8() {
         try {
-            tool2.updateOrderItem(3,3,10);
+            tool2.updateOrderItem(2,3,20);
         } catch (Exception e) {
             e.printStackTrace(err);
         }
@@ -138,9 +138,9 @@ public class TestCases {
     public void method10() {
         try {
             //价格升序
-            //List<Orders> orders=tool2.getAllOrders("total_price");
+            List<Orders> orders=tool2.getAllOrders("total_price");
             //下单时间升序
-            List<Orders> orders=tool2.getAllOrders("order_time");
+            //List<Orders> orders=tool2.getAllOrders("order_time");
             for (Orders order : orders) {
                 System.out.println(order);
             }
