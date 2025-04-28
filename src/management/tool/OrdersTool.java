@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
-public class OrdersTest {
+public class OrdersTool {
 
     //配置文件
     private static final String URL;
@@ -22,7 +22,7 @@ public class OrdersTest {
     //配置文件静态代码块
     static {
         //读取外界的配置文件
-        InputStream asStream=ProductTest.class.getResourceAsStream("/account.properties");
+        InputStream asStream= ProductTool.class.getResourceAsStream("/account.properties");
         //解析流
         Properties properties=new Properties();
         try {
@@ -40,7 +40,7 @@ public class OrdersTest {
     //合法性判断
     Legitimate legitimate =new Legitimate();
     //调用商品方法
-    ProductTest tool1 = new ProductTest();
+    ProductTool tool1 = new ProductTool();
 
     private Connection getConnection() throws Exception{
         return DriverManager.getConnection(URL,USER, PASSWORD);

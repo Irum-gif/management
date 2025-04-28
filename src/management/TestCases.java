@@ -3,8 +3,8 @@ package management;
 import management.table.Item;
 import management.table.Product;
 import management.table.Orders;
-import management.tool.ProductTest;
-import management.tool.OrdersTest;
+import management.tool.ProductTool;
+import management.tool.OrdersTool;
 
 import org.junit.Test;
 
@@ -13,8 +13,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class TestCases {
-    ProductTest tool1 = new ProductTest();
-    OrdersTest tool2= new OrdersTest();
+    ProductTool tool1 = new ProductTool();
+    OrdersTool tool2= new OrdersTool();
     @Test
     //添加商品
     public void method1() {

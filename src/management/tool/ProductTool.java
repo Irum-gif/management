@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Properties;
 
 
-public class ProductTest {
+public class ProductTool {
 
     private static final String URL;
     private static final String USER;
@@ -18,7 +18,7 @@ public class ProductTest {
     //配置文件静态代码块
     static {
         //读取外界的配置文件
-        InputStream asStream=ProductTest.class.getResourceAsStream("/account.properties");
+        InputStream asStream= ProductTool.class.getResourceAsStream("/account.properties");
         //解析流
         Properties properties=new Properties();
         try {
@@ -176,7 +176,7 @@ public class ProductTest {
     }
     //检查商品是否存在(商品名)
     public Boolean checkProductByName(String name) throws Exception {
-        ProductTest test = new ProductTest();
+        ProductTool test = new ProductTool();
         ArrayList<String> product = test.selectAllProductName();
         boolean status = true;
         for (String string : product) {
