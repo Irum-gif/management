@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.lang.System.err;
+
 public class TestCases {
     ProductTool tool1 = new ProductTool();
     OrdersTool tool2= new OrdersTool();
@@ -38,7 +40,7 @@ public class TestCases {
                 tool1.addProduct(product);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(err);
         }
     }
     @Test
@@ -47,7 +49,7 @@ public class TestCases {
         try {
             tool1.deleteProductById(12);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(err);
         }
     }
     @Test
@@ -56,7 +58,7 @@ public class TestCases {
         try {
             tool1.updateProduct("草莓", 2, 50,3);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(err);
         }
     }
     @Test
@@ -65,7 +67,7 @@ public class TestCases {
         try {
             System.out.println(tool1.getProductById(3));
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(err);
         }
     }
     @Test
@@ -101,7 +103,7 @@ public class TestCases {
                 tool2.addOrders(order);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(err);
         }
     }
     @Test
@@ -110,7 +112,7 @@ public class TestCases {
         try {
             tool2.deleteOrdersById(4);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(err);
         }
     }
     @Test
@@ -119,28 +121,31 @@ public class TestCases {
         try {
             tool2.updateOrderItem(3,3,10);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(err);
         }
     }
     @Test
     //查询订单
     public void method9() {
         try {
-            System.out.println(tool2.getOrderById(2));
+            System.out.println(tool2.getOrderById(3));
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(err);
         }
     }
     @Test
     //排序所有订单
     public void method10() {
         try {
-            List<Orders> orders=tool2.getAllOrders("total_price");
+            //价格升序
+            //List<Orders> orders=tool2.getAllOrders("total_price");
+            //下单时间升序
+            List<Orders> orders=tool2.getAllOrders("order_time");
             for (Orders order : orders) {
                 System.out.println(order);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(err);
         }
     }
     @Test

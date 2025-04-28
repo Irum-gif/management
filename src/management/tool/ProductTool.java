@@ -12,9 +12,16 @@ import java.util.Properties;
 
 public class ProductTool {
 
+    //配置文件
     private static final String URL;
     private static final String USER;
     private static final String PASSWORD;
+    //静态常量
+    private static final String productName="product_name";
+    private static final String productId="product_id";
+    private static final String productPrice="product_price";
+    private static final String Stock="stock";
+
     //配置文件静态代码块
     static {
         //读取外界的配置文件
@@ -33,7 +40,7 @@ public class ProductTool {
         }
     }
 
-    String insertColumn= String.format("%s,%s,%s","product_name","product_price","stock");
+
 
     //获取数据库连接
     private Connection getConnection() throws Exception{
@@ -51,10 +58,11 @@ public class ProductTool {
         try(Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql)){
             while (rs.next()){
-                String str = rs.getString("product_name");
+                String str = rs.getString(productName);
                 products.add(str);
             }
         }catch (Exception e){
+            System.out.println(sql+"运行时异常");
             throw e;
         }finally {
             conn.close();
@@ -69,10 +77,11 @@ public class ProductTool {
         try(Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql)){
             while (rs.next()){
-                Integer box = rs.getInt("product_id");
+                Integer box = rs.getInt(productId);
                 products.add(box);
             }
         }catch (Exception e){
+            System.out.println(sql+"运行时异常");
             throw e;
         }finally {
             conn.close();
@@ -88,7 +97,7 @@ public class ProductTool {
             conn.setAutoCommit(false);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                products.add(rs.getInt("product_id"));
+                products.add(rs.getInt(productId));
             }
             conn.commit();
         } catch (Exception e) {
@@ -101,7 +110,7 @@ public class ProductTool {
     }
     //添加商品
     public void addProduct(Product product) throws Exception {
-        String sql=String.format("insert into product(%s) values(?,?,?);",insertColumn);
+        String sql="insert into product(product_name,product_price,stock) values(?,?,?);";
         Connection conn=getConnection();
         try(PreparedStatement pstmt = conn.prepareStatement(sql)){
             conn.setAutoCommit(false);
@@ -210,10 +219,10 @@ public class ProductTool {
             while (rs.next()){
 
                 Product product=new Product();
-                product.setProductId(rs.getInt("product_id"));
-                product.setProductName(rs.getString("product_name"));
-                product.setProductPrice(rs.getDouble("product_price"));
-                product.setStock(rs.getInt("stock"));
+                product.setProductId(rs.getInt(productId));
+                product.setProductName(rs.getString(productName));
+                product.setProductPrice(rs.getDouble(productPrice));
+                product.setStock(rs.getInt(Stock));
                 products.add(product);
             }
         }catch (Exception e){
@@ -238,9 +247,9 @@ public class ProductTool {
             ResultSet rs =pstmt.executeQuery();
             while (rs.next()){
                 product.setProductId(id);
-                product.setProductName(rs.getString("product_name"));
-                product.setProductPrice(rs.getDouble("product_price"));
-                product.setStock(rs.getInt("stock"));
+                product.setProductName(rs.getString(productName));
+                product.setProductPrice(rs.getDouble(productPrice));
+                product.setStock(rs.getInt(Stock));
             }
             conn.commit();
         }catch (Exception e){
@@ -264,7 +273,7 @@ public class ProductTool {
             pstmt.setInt(1,id);
             ResultSet rs =pstmt.executeQuery();
             rs.next();
-            stock=rs.getInt("stock");
+            stock=rs.getInt(Stock);
             conn.commit();
         }catch (SQLException e){
             conn.rollback();

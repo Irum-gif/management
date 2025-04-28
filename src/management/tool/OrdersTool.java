@@ -19,6 +19,12 @@ public class OrdersTool {
     private static final String URL;
     private static final String USER;
     private static final String PASSWORD;
+    //静态常量
+    private static final String orderId="order_id";
+    private static final String totalPrice="total_price";
+    private static final String orderTime="order_time";
+    private static final String productId="product_id";
+    private static final String quantity="quantity";
     //配置文件静态代码块
     static {
         //读取外界的配置文件
@@ -54,10 +60,11 @@ public class OrdersTool {
         try(Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql)){
             while (rs.next()){
-                Integer box = rs.getInt("order_id");
+                Integer box = rs.getInt(orderId);
                 orders.add(box);
             }
         }catch (Exception e){
+            System.out.println(sql+"运行时异常");
             throw e;
         }finally {
             conn.close();
@@ -180,7 +187,7 @@ public class OrdersTool {
             pstmt.setInt(1,id);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                product.add(rs.getInt("product_id"));
+                product.add(rs.getInt(productId));
             }
         } catch (Exception e) {
             conn.rollback();
@@ -201,7 +208,7 @@ public class OrdersTool {
             ResultSet rs =pstmt.executeQuery();
             while (rs.next()){
                 Collections.addAll(items,
-                        new Item(rs.getInt("product_id"),rs.getInt("quantity"))
+                        new Item(rs.getInt(productId),rs.getInt(quantity))
                 );
             }
             conn.commit();
@@ -226,10 +233,10 @@ public class OrdersTool {
             pstmt.setInt(1,id);
             ResultSet rs =pstmt.executeQuery();
             while (rs.next()){
-                orders.setOrderId(rs.getInt("order_id"));
-                orders.setTotalPrice(rs.getDouble("total_price"));
-                orders.setOrderTime(rs.getDate("order_time"));
-                orders.setItems(getItemsById(rs.getInt("order_id")));
+                orders.setOrderId(rs.getInt(orderId));
+                orders.setTotalPrice(rs.getDouble(totalPrice));
+                orders.setOrderTime(rs.getDate(orderTime));
+                orders.setItems(getItemsById(rs.getInt(orderId)));
             }
             conn.commit();
         }catch (SQLException e){
@@ -297,12 +304,11 @@ public class OrdersTool {
         List<Orders> orders=new ArrayList<>();
         String sql = String.format("SELECT order_id FROM orders ORDER BY %s ASC",string);
         Connection conn = getConnection();
-
         try(Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)){
             conn.setAutoCommit(false);
             while (rs.next()){
-                orders.add(getOrderById(rs.getInt("order_id")));
+                orders.add(getOrderById(rs.getInt(orderId)));
             }
             conn.commit();
         }catch (SQLException e){
