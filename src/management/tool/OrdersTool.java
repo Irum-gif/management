@@ -247,7 +247,7 @@ public class OrdersTool {
         }
         return orders;
     }
-    //修改订单中商品个数
+    //修改订单中商品个数（增加或者减少商品表中对应商品个数）
     public void updateOrderItem(int id, int productId, int quantity) throws Exception {
         String sql="update orders_product set quantity=? where order_id=? and product_id=?";
         Connection conn=getConnection();

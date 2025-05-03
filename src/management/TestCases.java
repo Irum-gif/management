@@ -56,7 +56,7 @@ public class TestCases {
     //修改商品
     public void method3() {
         try {
-            tool1.updateProduct("草莓", 2, 50,12);
+            tool1.updateProduct("草莓", 1, 50,6);
         } catch (Exception e) {
             e.printStackTrace(err);
         }
@@ -65,7 +65,7 @@ public class TestCases {
     //查询商品
     public void method4() {
         try {
-            System.out.println(tool1.getProductById(12));
+            System.out.println(tool1.getProductById(6));
         } catch (Exception e) {
             e.printStackTrace(err);
         }
@@ -86,7 +86,7 @@ public class TestCases {
             List<Item> items1=new ArrayList<>();
             List<Item> items2=new ArrayList<>();
             Collections.addAll(items1,
-                    new Item(1,-1),
+                    new Item(1,1),
                     new Item(2,1),
                     new Item(3,3)
             );

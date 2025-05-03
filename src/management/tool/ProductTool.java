@@ -40,8 +40,6 @@ public class ProductTool {
         }
     }
 
-
-
     //获取数据库连接
     private Connection getConnection() throws Exception{
         return DriverManager.getConnection(URL,USER, PASSWORD);
