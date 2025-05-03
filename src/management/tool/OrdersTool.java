@@ -258,6 +258,7 @@ public class OrdersTool {
             } else if (checkOrderProductById(id,productId)){
                 throw new InvalidDataException("订单"+id+"中不存在"+productId+"号商品");
             } else if (quantity==0) {
+                //用户输入数量为0代表需将此商品从订单中删除
                 deleteOrdersProductById(productId);
                 System.out.println("订单"+id+"商品"+productId+"删除成功");
                 return;
@@ -273,7 +274,7 @@ public class OrdersTool {
             pstmt.executeUpdate();
             System.out.println("订单"+id+"商品"+productId+"数量修改成功");
             conn.commit();
-            //事务处理完后实际商品价格更改，保证商品价格更改数据不会出现异常
+            //事务处理完后实际商品价格更改，保证商品价格更改数据不会出现异常，并保证事务原子性
             updateOrders(id,calculateTotalPrice(getItemsById(id)));
         }catch (Exception e){
             conn.rollback();
